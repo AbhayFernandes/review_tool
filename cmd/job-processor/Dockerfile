@@ -4,13 +4,13 @@ FROM golang:1.23 as builder
 # Set working directory
 WORKDIR /app
 
-# Copy the go.mod and go.sum files and download dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-
 # Copy the Job Processor code
-COPY cmd/job-processor/ ./cmd/job-processor/
+COPY cmd/ ./cmd/
 COPY pkg/ ./pkg/
+
+# Copy the go.mod and  files and download dependencies
+COPY go.mod go.work ./
+RUN go mod download
 
 # Build the Job Processor binary
 RUN go build -o job-processor ./cmd/job-processor

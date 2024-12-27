@@ -1,27 +1,18 @@
-# Use Bun as the base image
-FROM oven/bun:1.0.2 as builder
+# base image
+FROM node:19
 
-# Set working directory
-WORKDIR /app
+# set working directory
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
 
-# Copy package.json, bun.lockb, and install dependencies
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+# add `/usr/src/app/node_modules/.bin` to $PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# Copy the entire web application code
-COPY . .
+# install and cache app dependencies
+COPY package.json /usr/src/app/package.json
+RUN npm install --silent
+RUN npm install react-scripts@1.1.1 -g --silent
 
-# Build the application
-RUN bun build
+# start app
+CMD ["npm", "start"]
 
-# Use Nginx to serve the built files
-FROM nginx:alpine
-
-# Copy the build files to the Nginx HTML directory
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Expose the default Nginx port
-EXPOSE 80
-
-# Start the Nginx server
-CMD ["nginx", "-g", "daemon off;"]

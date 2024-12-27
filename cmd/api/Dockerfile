@@ -4,13 +4,13 @@ FROM golang:1.23 as builder
 # Set working directory
 WORKDIR /app
 
-# Copy the go.mod and go.sum files and download dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-
 # Copy the API service code
-COPY cmd/api/ ./cmd/api/
+COPY cmd/ ./cmd/
 COPY pkg/ ./pkg/
+
+# Copy the go.mod files and download dependencies
+COPY go.mod go.work ./
+RUN go mod download
 
 # Build the API binary
 RUN go build -o api ./cmd/api
