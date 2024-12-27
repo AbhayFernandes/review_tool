@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: cmd/api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - API_ENV=production
+    depends_on:
+      - scylla
+
+  job-processor:
+    build:
+      context: .
+      dockerfile: cmd/job-processor/Dockerfile
+    environment:
+      - JOB_ENV=production
+    depends_on:
+      - scylla
+
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+    stdin_open: true
+    tty: true
+
+  scylla:
+    image: scylladb/scylla
+    container_name: scylla
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./data/scylla:/var/lib/scylla
