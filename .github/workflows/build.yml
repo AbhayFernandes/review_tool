@@ -1,0 +1,38 @@
+name: Build Artifacts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build CLI
+        run: make build-cli
+
+      - name: Build API
+        run: make build-api
+
+      - name: Build Job Processor
+        run: make build-job-processor
+
+      - name: Build Web
+        run: make build-web
+
+      - name: Run tests
+        run: make test
