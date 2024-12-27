@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - API_ENV=production
+      - STAGE=devo
     depends_on:
       - scylla
 
@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: cmd/job-processor/Dockerfile
     environment:
-      - JOB_ENV=production
+      - STAGE=devo
     depends_on:
       - scylla
 
@@ -26,15 +26,12 @@ services:
       context: web
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080
-    stdin_open: true
-    tty: true
+      - "80:80"
 
   scylla:
     image: scylladb/scylla
     container_name: scylla
+    attach: false
     ports:
       - "9042:9042"
     volumes:

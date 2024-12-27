@@ -29,7 +29,7 @@ help:
 
 # Build commands
 .PHONY: build
-build: build-api build-job-processor build-cli build-web-no-run
+build: build-api build-job-processor build-cli build-web
 	@echo "All components built successfully!"
 
 .PHONY: build-go
@@ -50,11 +50,7 @@ build-job-processor:
 
 .PHONY: build-web
 build-web:
-	cd $(WEB_DIR) && bun install && bun run dev
-
-.PHONY: build-web-no-run
-build-web-no-run:
-	cd $(WEB_DIR) && bun install
+	cd $(WEB_DIR) && npm install && npm run build
 
 .PHONY: build-docker
 build-docker:
@@ -75,7 +71,7 @@ run-job-processor:
 
 .PHONY: run-web
 run-web:
-	cd $(WEB_DIR) && bun run dev
+	cd $(WEB_DIR) && npm run dev
 
 .PHONY: up
 up:

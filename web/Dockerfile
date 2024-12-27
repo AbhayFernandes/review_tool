@@ -1,5 +1,5 @@
 # base image
-FROM node:19-alpine
+FROM node:19-alpine as builder
 
 # set working directory
 RUN mkdir -p /usr/src/app
@@ -13,6 +13,14 @@ COPY package.json /usr/src/app/package.json
 RUN npm install --silent
 RUN npm install react-scripts@1.1.1 -g --silent
 
-# start app
-CMD ["npm", "run", "dev"]
+COPY . .
 
+# build app
+RUN npm run build
+
+FROM nginx:alpine as prod
+
+COPY --from=builder usr/src/app/dist /usr/share/nginx/html
+
+# Start the Nginx server
+CMD ["nginx", "-g", "daemon off;"]
