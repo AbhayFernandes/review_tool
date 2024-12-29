@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	"github.com/go-git/go-git/v5/storage/memory"
 )
 
 func getCurrentDir() string {
@@ -41,31 +41,15 @@ func getRepository(dir string) *git.Repository {
 }
 
 func getRemoteCommit(repo *git.Repository) (*object.Commit, error) {
-    // Clone a bare repository into memory
-    storer := memory.NewStorage()
+    // make this dynamic in future and default to either main/master
+    remoteRefName := plumbing.ReferenceName("refs/remotes/origin/main")
+    remoteRef, err := repo.Reference(remoteRefName, true)
 
-    remotes, _ := repo.Remotes()
-    remote := remotes[0]
-
-    mem_repo, err := git.Clone(storer, nil, &git.CloneOptions{
-        URL: remote.Config().URLs[0],
-    })
     if (err != nil) {
-        fmt.Println("There was an error obtaining information from the remote repository")
         return nil, err
     }
 
-    head, err := mem_repo.Head()
-    if (err != nil) {
-        fmt.Println("There was an error getting the remote repo HEAD.")
-        return nil, err
-    }
-
-    commit, err := mem_repo.CommitObject(head.Hash())
-    if (err != nil) {
-        fmt.Println("There was an error converting the remote repo's HEAD reference.")
-        return nil, err
-    }
+    commit, err := repo.CommitObject(remoteRef.Hash())
 
     return commit, nil
 }

@@ -1,22 +1,26 @@
 package main
 
 import (
-	"flag"
+	// "flag"
 	"fmt"
 )
 
 func main() {
-    serverAddr := flag.String(
-        "server", "localhost:8080",
-        "The server address in the form of host:port",
-    )
-    flag.Parse()
+    // serverAddr := flag.String(
+    //     "server", "localhost:8080",
+    //     "The server address in the form of host:port",
+    // )
+    // flag.Parse()
 
-    client, ctx := getClient(serverAddr)
-    fmt.Println(sayHello(client, ctx))
+    // client, ctx, conn, cancel := getClient(serverAddr)
+    // defer conn.Close()
+    // defer cancel()
+
+    // fmt.Println(sayHello(client, ctx))
 
     currentDir := getCurrentDir()
     repository := getRepository(currentDir)
+
     diffs, err := getPatchDiffs(repository)
     if err != nil {
         panic(err)
