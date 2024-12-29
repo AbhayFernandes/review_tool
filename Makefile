@@ -75,7 +75,7 @@ run-web:
 
 .PHONY: up
 up:
-	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up --build
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up --build -d
 
 .PHONY: down
 down:
@@ -86,6 +86,11 @@ down:
 test:
 	$(GO_CMD) test ./$(PKG_DIR)/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/...
 
+# Generate protobuf files
+.PHONY: proto
+proto:
+	cd "pkg/proto" && protoc echo.proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative
+
 # Clean commands
 .PHONY: clean
 clean:
@@ -93,4 +98,3 @@ clean:
 	rm -rf $(BUILD_DIR)
 	cd $(WEB_DIR) && rm -rf node_modules build
 	$(GO_CMD) clean -cache -testcache
-

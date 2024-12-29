@@ -4,4 +4,5 @@ use (
 	./cmd/api
 	./cmd/cli
 	./cmd/job-processor
+	./pkg/proto
 )
