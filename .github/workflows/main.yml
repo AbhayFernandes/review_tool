@@ -40,17 +40,17 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and push API Docker image
-        run: docker build -t ghcr.io/abhayfernandes/api:latest ./cmd/api
+        run: docker build -t ghcr.io/abhayfernandes/api:latest -f ./cmd/api/Dockerfile .
       - name: Push API Docker image
         run: docker push ghcr.io/abhayfernandes/api:latest
 
       - name: Build and push Job Processor Docker image
-        run: docker build -t ghcr.io/abhayfernandes/job-processor:latest ./cmd/job-processor
+        run: docker build -t ghcr.io/abhayfernandes/job-processor:latest -f ./cmd/job-processor/Dockerfile .
       - name: Push Job Processor Docker image
         run: docker push ghcr.io/abhayfernandes/job-processor:latest
 
       - name: Build and push Web Docker image
-        run: docker build -t ghcr.io/abhayfernandes/web:latest ./web
+        run: docker build -t ghcr.io/abhayfernandes/web:latest -f ./web/Dockerfile .
       - name: Push Web Docker image
         run: docker push ghcr.io/abhayfernandes/web:latest
 
