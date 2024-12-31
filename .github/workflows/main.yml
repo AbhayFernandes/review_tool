@@ -10,6 +10,7 @@ on:
 
 jobs:
   build:
+    permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
@@ -39,17 +40,17 @@ jobs:
       - name: Log in to GitHub Docker registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build and push API Docker image
+      - name: Build Docker Image for API service
         run: docker build -t ghcr.io/abhayfernandes/api:latest -f ./cmd/api/Dockerfile .
       - name: Push API Docker image
         run: docker push ghcr.io/abhayfernandes/api:latest
 
-      - name: Build and push Job Processor Docker image
+      - name: Build Job Processor Docker image
         run: docker build -t ghcr.io/abhayfernandes/job-processor:latest -f ./cmd/job-processor/Dockerfile .
       - name: Push Job Processor Docker image
         run: docker push ghcr.io/abhayfernandes/job-processor:latest
 
-      - name: Build and push Web Docker image
+      - name: Build Web Docker image
         run: docker build -t ghcr.io/abhayfernandes/web:latest -f ./web/Dockerfile .
       - name: Push Web Docker image
         run: docker push ghcr.io/abhayfernandes/web:latest
