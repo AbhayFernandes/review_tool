@@ -30,7 +30,7 @@ help:
 
 # Build commands
 .PHONY: build
-build: build-api build-job-processor build-cli build-web
+build: build-go build-web
 	@echo "All components built successfully!"
 
 .PHONY: build-go
@@ -40,10 +40,6 @@ build-go: build-api build-job-processor build-cli
 .PHONY: build-cli
 build-cli:
 	$(GO_CMD) build -o $(CLI_BINARY) $(CLI_DIR)
-
-.PHONY: install-cli
-install-cli:
-	$(GO_CMD) install $(CLI_DIR)
 
 .PHONY: build-api
 build-api:

@@ -66,6 +66,18 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previousTag
+        run: |
+          name=$(git --no-pager tag --sort=creatordate --merged ${{ github.ref_name }} | tail -2 | head -1)
+          echo "previousTag: $name"
+          echo "previousTag=$name" >> $GITHUB_ENV
+
       - name: Get Next Version
         id: semver
         uses: ietf-tools/semver-action@v1.8.0
@@ -84,6 +96,22 @@ jobs:
           release_name: Release ${{ steps.semver.outputs.next }}
           draft: false
           prerelease: false 
+
+      - name: Generate CHANGELOG
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          fromTag: ${{ steps.semver.outputs.next }}
+          toTag: ${{ env.previousTag }}
+          writeToFile: false
+
+      - name: Update release with changelog
+        uses: mini-bomba/create-github-release@v1.2.0
+        with:
+          tag: ${{ steps.semver.outputs.next }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ steps.changelog.outputs.changes }}
 
 
   publish-linux-cli:
