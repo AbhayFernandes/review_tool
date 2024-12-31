@@ -26,6 +26,8 @@ help:
 	@echo "  make down                - Stop all services with Docker Compose"
 	@echo "  make test                - Run all tests"
 	@echo "  make clean               - Clean up generated files"
+	@echo "  make publish-docker      - Build and push Docker images for API, Job Processor, and web components"
+	@echo "  make build-cli-release   - Build the CLI binary for release"
 
 # Build commands
 .PHONY: build
@@ -59,6 +61,20 @@ build-web:
 .PHONY: build-docker
 build-docker:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) build
+
+.PHONY: publish-docker
+publish-docker:
+	docker login ghcr.io -u $(GITHUB_USERNAME) -p $(GITHUB_TOKEN)
+	docker build -t ghcr.io/$(GITHUB_USERNAME)/api:latest $(API_DIR)
+	docker push ghcr.io/$(GITHUB_USERNAME)/api:latest
+	docker build -t ghcr.io/$(GITHUB_USERNAME)/job-processor:latest $(JOB_PROCESSOR_DIR)
+	docker push ghcr.io/$(GITHUB_USERNAME)/job-processor:latest
+	docker build -t ghcr.io/$(GITHUB_USERNAME)/web:latest $(WEB_DIR)
+	docker push ghcr.io/$(GITHUB_USERNAME)/web:latest
+
+.PHONY: build-cli-release
+build-cli-release:
+	$(GO_CMD) build -o $(BUILD_DIR)/crev-release $(CLI_DIR)
 
 # Run commands
 .PHONY: run-cli

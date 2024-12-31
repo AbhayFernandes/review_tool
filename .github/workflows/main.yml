@@ -1,0 +1,64 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Build CLI
+        run: make build-cli
+
+      - name: Build API
+        run: make build-api
+
+      - name: Build Job Processor
+        run: make build-job-processor
+
+      - name: Build Web
+        run: make build-web
+
+      - name: Run tests
+        run: make test
+
+      - name: Log in to GitHub Docker registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and push API Docker image
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/api:latest ./cmd/api
+      - name: Push API Docker image
+        run: docker push ghcr.io/${{ github.repository_owner }}/api:latest
+
+      - name: Build and push Job Processor Docker image
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/job-processor:latest ./cmd/job-processor
+      - name: Push Job Processor Docker image
+        run: docker push ghcr.io/${{ github.repository_owner }}/job-processor:latest
+
+      - name: Build and push Web Docker image
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/web:latest ./web
+      - name: Push Web Docker image
+        run: docker push ghcr.io/${{ github.repository_owner }}/web:latest
+
+      - name: Build CLI release
+        run: make build-cli-release
+
+      - name: Upload CLI binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: crev-release
+          path: ./build/crev-release
