@@ -1,7 +1,6 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3b594526ba8ebeef8bcf/maintainability)](https://codeclimate.com/github/AbhayFernandes/review_tool/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3b594526ba8ebeef8bcf/test_coverage)](https://codeclimate.com/github/AbhayFernandes/review_tool/test_coverage)
-[![DeepSource](https://app.deepsource.com/gh/AbhayFernandes/review_tool.svg/?label=active+issues&show_trend=true&token=Uq3ZVq8ITznBv5BSfi6DCH6-)](https://app.deepsource.com/gh/AbhayFernandes/review_tool/)
 
 # Review Tool
 
