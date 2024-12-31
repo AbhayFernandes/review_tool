@@ -40,4 +40,6 @@ jobs:
           CC_TEST_REPORTER_ID: 9cf6e13ac4af369d65f368d9693645efa14ab1d533997b6d31da1b4dabe538e4
         with:
           coverageCommand: make test-cov
+          coverageLocations: |
+            ${{github.workspace}}/*.out:gocov
           debug: true

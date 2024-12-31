@@ -97,7 +97,12 @@ test:
 
 .PHONY: test-cov
 test-cov:
-	$(GO_CMD) test -race -covermode atomic -coverprofile=covprofile ./$(PKG_DIR)/ssh/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/... > c.out
+	@for pkg in $$(go list -f '{{.Dir}}' -m | xargs); do \
+		go test -coverprofile=$$(echo $$pkg | tr / -).cover $$pkg; \
+	done
+	@echo "mode: set" > c.out
+	@grep -h -v "^mode:" ./*.cover >> c.out
+	@rm -f -- *.cover
 
 # Generate protobuf files
 .PHONY: proto
