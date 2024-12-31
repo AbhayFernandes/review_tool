@@ -90,6 +90,14 @@ up:
 down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
 
+.PHONY: fmt
+fmt: 
+	@go list -f '{{.Dir}}' -m | \
+	xargs -n1 | \
+	sed 's|^/github.com/[^/]*/review_tool/||' | \
+	while read pkg; do \
+		gofmt -l -w $$pkg; \
+	done
 # Test commands
 .PHONY: test
 test:
