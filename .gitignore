@@ -22,3 +22,4 @@
 build/
 .aider*
 data/
+cmd/crev/crev

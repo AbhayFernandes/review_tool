@@ -3,9 +3,9 @@ GO_CMD = go
 DOCKER_COMPOSE = docker-compose
 DOCKER_COMPOSE_FILE = docker-compose.yml
 WEB_DIR = web
-CLI_BINARY = cmd/cli/cli
+CLI_BINARY = cmd/crev/crev
 API_DIR = ./cmd/api
-CLI_DIR = ./cmd/cli
+CLI_DIR = ./cmd/crev
 BUILD_DIR = ./build
 JOB_PROCESSOR_DIR = ./cmd/job-processor
 PKG_DIR = pkg
@@ -39,6 +39,10 @@ build-go: build-api build-job-processor build-cli
 .PHONY: build-cli
 build-cli:
 	$(GO_CMD) build -o $(CLI_BINARY) $(CLI_DIR)
+
+.PHONY: install-cli
+install-cli:
+	$(GO_CMD) install $(CLI_DIR)
 
 .PHONY: build-api
 build-api:
