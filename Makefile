@@ -61,19 +61,6 @@ build-web:
 build-docker:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) build
 
-<<<<<<< HEAD
-.PHONY: publish-docker
-publish-docker:
-	docker login ghcr.io -u $(GITHUB_USERNAME) -p $(GITHUB_TOKEN)
-	docker build -t ghcr.io/$(GITHUB_USERNAME)/api:latest $(API_DIR)
-	docker push ghcr.io/$(GITHUB_USERNAME)/api:latest
-	docker build -t ghcr.io/$(GITHUB_USERNAME)/job-processor:latest $(JOB_PROCESSOR_DIR)
-	docker push ghcr.io/$(GITHUB_USERNAME)/job-processor:latest
-	docker build -t ghcr.io/$(GITHUB_USERNAME)/web:latest $(WEB_DIR)
-	docker push ghcr.io/$(GITHUB_USERNAME)/web:latest
-
-=======
->>>>>>> 537f30b (Add GitHub Actions workflow for building and publishing)
 .PHONY: build-cli-release
 build-cli-release:
 	$(GO_CMD) build -o $(BUILD_DIR)/crev-release $(CLI_DIR)
