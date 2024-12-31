@@ -93,7 +93,9 @@ down:
 # Test commands
 .PHONY: test
 test:
-	$(GO_CMD) test ./$(PKG_DIR)/ssh/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/...
+	@for pkg in $$(go list -f '{{.Dir}}' -m | xargs); do \
+		go test $$pkg; \
+	done
 
 .PHONY: test-cov
 test-cov:
