@@ -26,7 +26,6 @@ help:
 	@echo "  make down                - Stop all services with Docker Compose"
 	@echo "  make test                - Run all tests"
 	@echo "  make clean               - Clean up generated files"
-	@echo "  make publish-docker      - Build and push Docker images for API, Job Processor, and web components"
 	@echo "  make build-cli-release   - Build the CLI binary for release"
 
 # Build commands
@@ -62,6 +61,7 @@ build-web:
 build-docker:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) build
 
+<<<<<<< HEAD
 .PHONY: publish-docker
 publish-docker:
 	docker login ghcr.io -u $(GITHUB_USERNAME) -p $(GITHUB_TOKEN)
@@ -72,6 +72,8 @@ publish-docker:
 	docker build -t ghcr.io/$(GITHUB_USERNAME)/web:latest $(WEB_DIR)
 	docker push ghcr.io/$(GITHUB_USERNAME)/web:latest
 
+=======
+>>>>>>> 537f30b (Add GitHub Actions workflow for building and publishing)
 .PHONY: build-cli-release
 build-cli-release:
 	$(GO_CMD) build -o $(BUILD_DIR)/crev-release $(CLI_DIR)

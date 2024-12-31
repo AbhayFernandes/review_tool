@@ -58,7 +58,7 @@ jobs:
         run: make build-cli-release
 
       - name: Upload CLI binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: crev-release
           path: ./build/crev-release
