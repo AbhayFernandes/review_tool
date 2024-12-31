@@ -1,21 +1,19 @@
-name: Publish
+name: Publish Artifacts
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  publish:
+  publish-docker-api:
     permissions: write-all
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.23
-
       - name: Check out repository
         uses: actions/checkout@v2
 
@@ -27,21 +25,76 @@ jobs:
       - name: Push API Docker image
         run: docker push ghcr.io/abhayfernandes/api:latest
 
+      - name: Build Web Docker image
+        run: docker build -t ghcr.io/abhayfernandes/web:latest -f ./web/Dockerfile .
+      - name: Push Web Docker image
+        run: docker push ghcr.io/abhayfernandes/web:latest
+
+  publish-docker-job-processor:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Docker registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build Job Processor Docker image
         run: docker build -t ghcr.io/abhayfernandes/job-processor:latest -f ./cmd/job-processor/Dockerfile .
       - name: Push Job Processor Docker image
         run: docker push ghcr.io/abhayfernandes/job-processor:latest
+        
+  publish-docker-job-processor:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Docker registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build Web Docker image
         run: docker build -t ghcr.io/abhayfernandes/web:latest -f ./web/Dockerfile .
       - name: Push Web Docker image
         run: docker push ghcr.io/abhayfernandes/web:latest
 
+  create-release:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true 
+
+
+  publish-linux-cli:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: create-release
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.23
+
       - name: Build CLI release
         run: make build-cli-release
 
-      - name: Upload CLI binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: crev
-          path: ./build/crev
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+            asset_path: ./crev-release
+            asset_name: crev
+            asset_content_type: application/zip
