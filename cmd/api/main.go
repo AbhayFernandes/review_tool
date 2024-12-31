@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net"
 
@@ -10,17 +9,6 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-type server struct {
-    proto.UnimplementedReviewServiceServer
-}
-
-func (s *server) SayHello(
-    ctx context.Context, input *proto.HelloRequest,
-) (*proto.HelloReply, error) {
-    return &proto.HelloReply{
-        Message: "Hello, " + input.Name,
-    }, nil
-}
 
 func main() {
     log.Println("Starting API Service")

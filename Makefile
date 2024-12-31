@@ -88,7 +88,7 @@ down:
 # Test commands
 .PHONY: test
 test:
-	$(GO_CMD) test ./$(PKG_DIR)/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/...
+	$(GO_CMD) test ./$(PKG_DIR)/ssh/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/...
 
 # Generate protobuf files
 .PHONY: proto
