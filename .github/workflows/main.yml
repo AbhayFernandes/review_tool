@@ -40,19 +40,19 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and push API Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/api:latest ./cmd/api
+        run: docker build -t ghcr.io/abhayfernandes/api:latest ./cmd/api
       - name: Push API Docker image
-        run: docker push ghcr.io/${{ github.repository_owner }}/api:latest
+        run: docker push ghcr.io/abhayfernandes/api:latest
 
       - name: Build and push Job Processor Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/job-processor:latest ./cmd/job-processor
+        run: docker build -t ghcr.io/abhayfernandes/job-processor:latest ./cmd/job-processor
       - name: Push Job Processor Docker image
-        run: docker push ghcr.io/${{ github.repository_owner }}/job-processor:latest
+        run: docker push ghcr.io/abhayfernandes/job-processor:latest
 
       - name: Build and push Web Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/web:latest ./web
+        run: docker build -t ghcr.io/abhayfernandes/web:latest ./web
       - name: Push Web Docker image
-        run: docker push ghcr.io/${{ github.repository_owner }}/web:latest
+        run: docker push ghcr.io/abhayfernandes/web:latest
 
       - name: Build CLI release
         run: make build-cli-release
