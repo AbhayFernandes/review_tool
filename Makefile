@@ -97,12 +97,15 @@ test:
 
 .PHONY: test-cov
 test-cov:
-	@for pkg in $$(go list -f '{{.Dir}}' -m | xargs); do \
-		go test -coverprofile=$$(echo $$pkg | tr / -).cover $$pkg; \
+	@go list -f '{{.Dir}}' -m | \
+	xargs -n1 | \
+	sed 's|^/Users/[^/]*/workplace/review_tool/||' | \
+	while read pkg; do \
+		go test -coverprofile=$$(echo $$pkg | tr / -).cover /Users/$$USER/workplace/review_tool/$$pkg; \
 	done
 	@echo "mode: set" > c.out
 	@grep -h -v "^mode:" ./*.cover >> c.out
-	@rm -f -- *.cover
+	# @rm -f -- *.cover
 
 # Generate protobuf files
 .PHONY: proto
