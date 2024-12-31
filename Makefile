@@ -93,7 +93,7 @@ down:
 # Test commands
 .PHONY: test
 test:
-	$(GO_CMD) test ./$(PKG_DIR)/ssh/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/...
+	$(GO_CMD) test -race -covermode atomic -coverprofile=covprofile ./$(PKG_DIR)/ssh/... ./$(API_DIR)/... ./$(JOB_PROCESSOR_DIR)/... ./$(CLI_DIR)/...
 
 # Generate protobuf files
 .PHONY: proto

@@ -66,16 +66,24 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
+      - name: Get Next Version
+        id: semver
+        uses: ietf-tools/semver-action@v1.8.0
+        with:
+          token: ${{ github.token }}
+          branch: main
+          noVersionBumpBehavior: current
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.semver.outputs.next }}
+          release_name: Release ${{ steps.semver.outputs.next }}
           draft: false
-          prerelease: true 
+          prerelease: false 
 
 
   publish-linux-cli:
@@ -155,3 +163,4 @@ jobs:
           asset_path: ./build/crev
           asset_name: crev-windows
           asset_content_type: application/octet-stream
+

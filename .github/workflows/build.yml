@@ -34,5 +34,10 @@ jobs:
       - name: Build Web
         run: make build-web
 
-      - name: Run tests
-        run: make test
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v9.0.0
+        env:
+          CC_TEST_REPORTER_ID: 9cf6e13ac4af369d65f368d9693645efa14ab1d533997b6d31da1b4dabe538e4
+        with:
+          coverageCommand: make test
+          debug: true
