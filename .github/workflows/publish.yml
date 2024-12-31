@@ -1,4 +1,4 @@
-name: Build
+name: Publish
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  publish:
     permissions: write-all
     runs-on: ubuntu-latest
 
@@ -43,5 +43,5 @@ jobs:
       - name: Upload CLI binary
         uses: actions/upload-artifact@v4
         with:
-          name: crev-release
-          path: ./build/crev-release
+          name: crev
+          path: ./build/crev

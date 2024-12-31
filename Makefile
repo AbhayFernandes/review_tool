@@ -63,7 +63,7 @@ build-docker:
 
 .PHONY: build-cli-release
 build-cli-release:
-	$(GO_CMD) build -o $(BUILD_DIR)/crev-release $(CLI_DIR)
+	$(GO_CMD) build -o $(BUILD_DIR)/crev $(CLI_DIR)
 
 # Run commands
 .PHONY: run-cli
