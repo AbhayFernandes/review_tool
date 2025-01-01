@@ -1,6 +1,3 @@
-ARG STAGE
-ARG STAGE=devo
-
 # base image
 FROM node:19-alpine as builder
 

@@ -2,7 +2,6 @@
 GO_CMD = go
 DOCKER_COMPOSE = docker-compose
 DOCKER_COMPOSE_FILE = docker-compose.yml
-DOCKER_COMPOSE_PROD_FILE = docker-compose.prod.yml
 WEB_DIR = web
 CLI_BINARY = cmd/crev/crev
 API_DIR = ./cmd/api
@@ -24,7 +23,6 @@ help:
 	@echo "  make build-docker        - Build all Docker images"
 	@echo "  make build-web           - Build the web ui and run it"
 	@echo "  make up                  - Start all services with Docker Compose"
-	@echo "  make prod-up             - Start all services with Docker Compose for prod env"
 	@echo "  make down                - Stop all services with Docker Compose"
 	@echo "  make test                - Run all tests"
 	@echo "  make clean               - Clean up generated files"
@@ -83,10 +81,6 @@ run-web:
 .PHONY: up
 up:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up --build -d
-
-.PHONY: prod-up
-prod-up:
-	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_PROD_FILE) up --build -d
 
 .PHONY: down
 down:
