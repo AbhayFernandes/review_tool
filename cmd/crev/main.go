@@ -10,7 +10,7 @@ import (
 
 func main() {
     serverAddr := flag.String(
-        "server", "localhost:8080",
+        "server", "crev.abhayf.com:8080",
         "The server address in the form of host:port",
     )
 
@@ -34,7 +34,7 @@ func main() {
         Diff: diff,
         User: *user,
     }); if (err != nil) {
-        fmt.Println("Uploading diffs has failed.")
+        fmt.Println("Uploading diffs has failed: ", err.Error())
     }
 }
 
