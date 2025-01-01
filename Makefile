@@ -25,6 +25,7 @@ help:
 	@echo "  make build-web           - Build the web ui and run it"
 	@echo "  make up                  - Start all services with Docker Compose"
 	@echo "  make prod-up             - Start all services with Docker Compose for prod env"
+	@echo "  make prod-down           - Start all services with Docker Compose for prod env"
 	@echo "  make down                - Stop all services with Docker Compose"
 	@echo "  make test                - Run all tests"
 	@echo "  make clean               - Clean up generated files"
@@ -91,6 +92,10 @@ prod-up:
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
+
+.PHONY: prod-down
+prod-down:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_PROD_FILE) down
 
 .PHONY: fmt
 fmt: 
