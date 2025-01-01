@@ -1,3 +1,6 @@
+ARG STAGE
+ARG STAGE=devo
+
 # Use a lightweight base image with Go
 FROM golang:1.23 as builder
 
