@@ -43,10 +43,10 @@ The Makefile includes various commands for building, running, testing, and clean
 
 The Review Tool project is composed of the following components:
 
-1. **CLI**: A command-line interface for interacting with the Review Tool services. This tool will primarily upload git diffs to the API server with SSH keys as authentication.
+1. **CLI**: A command-line interface for interacting with the Review Tool services. This tool will primarily upload git diffs to the API server with SSH keys as authentication. 
 2. **API**: A gRPC-based API service that handles requests and responses, and will orchestrate any jobs/actions needed on code reviews.
-   - Authentication will be done by taking an SSH private key from the user and hashing the commit message, which the server will verify using the user's public key, submitted
-     through web UI.
+    - Authentication will be done by taking an SSH private key from the user and hashing the commit message, which the server will verify using the user's public key, submitted
+    through web UI.
 3. **Job Processor**: A service responsible for processing jobs on code reviews. Things like static analysis, linting etc. will be done here.
 4. **Web**: A React-based web frontend for user interaction, allowing users to view changes, leave comments and approve changes.
 5. **ScyllaDB**: A NoSQL database used for storing metadata about every review. The reviews themselves will be stored on the Filesystem.
@@ -54,6 +54,5 @@ The Review Tool project is composed of the following components:
 The components communicate with each other using gRPC and are containerized using Docker. The `docker-compose.yml` file orchestrates the services, ensuring they are built and run in the correct order with the necessary dependencies.
 
 ## Note on Go Development:
-
 `/cmd` contains all the standalone packages that are a part of this package and `/pkg` contains any code that is shared between packages in `cmd`. These are things like the proto files
-and the go code that is generated.
+and the go code that is generated. 
