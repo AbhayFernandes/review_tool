@@ -1,13 +1,6 @@
 version = 1
 
 [[analyzers]]
-name = "javascript"
-
-  [analyzers.meta]
-  plugins = ["react"]
-  environment = ["nodejs"]
-
-[[analyzers]]
 name = "go"
 
   [analyzers.meta]
@@ -18,6 +11,3 @@ name = "docker"
 
 [[transformers]]
 name = "gofmt"
-
-[[transformers]]
-name = "prettier"
