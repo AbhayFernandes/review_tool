@@ -20,27 +20,26 @@ func main() {
 
 	s := grpc.NewServer()
 
-    client, err := mongo.Connect(options.Client().ApplyURI("mongodb://db:27017"))
-    if (err != nil) {
-        log.Fatalln("Failed to connect to mongo")
-    }
+	client, err := mongo.Connect(options.Client().ApplyURI("mongodb://db:27017"))
+	if err != nil {
+		log.Fatalln("Failed to connect to mongo")
+	}
 
-    if err := client.Ping(context.TODO(), nil); err != nil {
-        log.Fatalln("Could not connect to MongoDB: ", err)
-    }
+	if err := client.Ping(context.TODO(), nil); err != nil {
+		log.Fatalln("Could not connect to MongoDB: ", err)
+	}
 
-
-    defer func() {
-        if err = client.Disconnect(context.Background()); err != nil {
-            log.Fatalln("Failed to disconnect from mongo")
-            panic(err)
-        }
-    }()
+	defer func() {
+		if err = client.Disconnect(context.Background()); err != nil {
+			log.Fatalln("Failed to disconnect from mongo")
+			panic(err)
+		}
+	}()
 
 	proto.RegisterReviewServiceServer(s, &server{
-        proto.UnimplementedReviewServiceServer{},
-        client,
-    })
+		proto.UnimplementedReviewServiceServer{},
+		client,
+	})
 
 	if err := s.Serve(listener); err != nil {
 		log.Fatalln("failed to serve:", err)
