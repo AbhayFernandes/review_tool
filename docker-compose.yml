@@ -10,7 +10,9 @@ services:
     environment:
       - STAGE=devo
     depends_on:
-      - scylla
+      - db
+    volumes:
+      - ./data/diffs:/diffs
 
   job-processor:
     build:
@@ -19,7 +21,7 @@ services:
     environment:
       - STAGE=devo
     depends_on:
-      - scylla
+      - db
 
   web:
     build:
@@ -28,11 +30,11 @@ services:
     ports:
       - "80:80"
 
-  scylla:
-    image: scylladb/scylla
-    container_name: scylla
+  db:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongodb 
     attach: false
-    expose:
-      - "9042"
+    ports:
+      - "27017:27017"
     volumes:
-      - ./data/scylla:/var/lib/scylla
+      - ./data/mongo:/var/lib/mongo
