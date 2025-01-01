@@ -12,7 +12,6 @@ name = "go"
 
   [analyzers.meta]
   import_root = "github.com/AbhayFernandes/review_tool"
-  import_paths = ["github.com/AbhayFernandes/review_tool/cmd/api", "github.com/AbhayFernandes/review_tool/cmd/crev", "github.com/AbhayFernandes/review_tool/cmd/job-processor", "github.com/AbhayFernandes/review_tool/pkg/proto", "github.com/AbhayFernandes/review_tool/pkg/ssh"]
 
 [[analyzers]]
 name = "docker"
