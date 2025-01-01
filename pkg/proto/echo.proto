@@ -6,7 +6,6 @@ option go_package = "./proto";
 
 service ReviewService {
     rpc SayHello(HelloRequest) returns (HelloReply);
-    rpc UploadDiff(UploadDiffRequest) returns (UploadDiffReply);
 }
 
 message HelloRequest {
@@ -15,13 +14,4 @@ message HelloRequest {
 
 message HelloReply {
     string message = 1;
-}
-
-message UploadDiffRequest {
-    string diff = 1;
-    string user = 2;
-}
-
-message UploadDiffReply {
-    
 }

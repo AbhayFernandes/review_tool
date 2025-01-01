@@ -19,8 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ReviewService_SayHello_FullMethodName   = "/review_service.ReviewService/SayHello"
-	ReviewService_UploadDiff_FullMethodName = "/review_service.ReviewService/UploadDiff"
+	ReviewService_SayHello_FullMethodName = "/review_service.ReviewService/SayHello"
 )
 
 // ReviewServiceClient is the client API for ReviewService service.
@@ -28,7 +27,6 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReviewServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
-	UploadDiff(ctx context.Context, in *UploadDiffRequest, opts ...grpc.CallOption) (*UploadDiffReply, error)
 }
 
 type reviewServiceClient struct {
@@ -49,22 +47,11 @@ func (c *reviewServiceClient) SayHello(ctx context.Context, in *HelloRequest, op
 	return out, nil
 }
 
-func (c *reviewServiceClient) UploadDiff(ctx context.Context, in *UploadDiffRequest, opts ...grpc.CallOption) (*UploadDiffReply, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UploadDiffReply)
-	err := c.cc.Invoke(ctx, ReviewService_UploadDiff_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ReviewServiceServer is the server API for ReviewService service.
 // All implementations must embed UnimplementedReviewServiceServer
 // for forward compatibility.
 type ReviewServiceServer interface {
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
-	UploadDiff(context.Context, *UploadDiffRequest) (*UploadDiffReply, error)
 	mustEmbedUnimplementedReviewServiceServer()
 }
 
@@ -77,9 +64,6 @@ type UnimplementedReviewServiceServer struct{}
 
 func (UnimplementedReviewServiceServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
-}
-func (UnimplementedReviewServiceServer) UploadDiff(context.Context, *UploadDiffRequest) (*UploadDiffReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UploadDiff not implemented")
 }
 func (UnimplementedReviewServiceServer) mustEmbedUnimplementedReviewServiceServer() {}
 func (UnimplementedReviewServiceServer) testEmbeddedByValue()                       {}
@@ -120,24 +104,6 @@ func _ReviewService_SayHello_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ReviewService_UploadDiff_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UploadDiffRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ReviewServiceServer).UploadDiff(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ReviewService_UploadDiff_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReviewServiceServer).UploadDiff(ctx, req.(*UploadDiffRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // ReviewService_ServiceDesc is the grpc.ServiceDesc for ReviewService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -148,10 +114,6 @@ var ReviewService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayHello",
 			Handler:    _ReviewService_SayHello_Handler,
-		},
-		{
-			MethodName: "UploadDiff",
-			Handler:    _ReviewService_UploadDiff_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
