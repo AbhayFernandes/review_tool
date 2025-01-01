@@ -3,7 +3,10 @@ name: Publish Artifacts
 on:
   push:
     branches:
-      - release
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   publish-docker-api:
