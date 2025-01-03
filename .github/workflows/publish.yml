@@ -3,7 +3,7 @@ name: Publish Artifacts
 on:
   push:
     branches:
-      - release
+      - main 
 
 jobs:
   publish-docker-api:
@@ -64,7 +64,7 @@ jobs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 

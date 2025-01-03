@@ -42,6 +42,7 @@ services:
       - "traefik.http.routers.api.rule=Host(`crev.abhayf.com`)"
       - "traefik.http.routers.api.entrypoints=apisecure"
       - "traefik.http.routers.api.tls.certresolver=myresolver"
+      - "traefik.http.services.api.loadbalancer.server.scheme=h2c"
     environment:
       - STAGE=devo
     depends_on:

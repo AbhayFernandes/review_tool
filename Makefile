@@ -28,6 +28,7 @@ help:
 	@echo "  make prod-down           - Start all services with Docker Compose for prod env"
 	@echo "  make down                - Stop all services with Docker Compose"
 	@echo "  make test                - Run all tests"
+	@echo "  make test-cov            - Run all tests with coverage output"
 	@echo "  make clean               - Clean up generated files"
 	@echo "  make build-cli-release   - Build the CLI binary for release"
 

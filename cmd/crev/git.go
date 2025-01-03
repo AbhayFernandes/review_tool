@@ -41,7 +41,12 @@ func getRemoteCommit(repo *git.Repository) (*object.Commit, error) {
 }
 
 func getPatchDiffs(repository *git.Repository) (string, error) {
-	head, _ := repository.Head()
+	head, err := repository.Head()
+	if err != nil {
+		fmt.Println(err)
+		return "", err
+	}
+
 	local_commit, _ := repository.CommitObject(head.Hash())
 	remote_commit, err := getRemoteCommit(repository)
 
