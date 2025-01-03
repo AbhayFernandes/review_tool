@@ -23,10 +23,10 @@ jobs:
       - name: Merge Main into Dev
         run: |
           git checkout dev
-          git merge main --no-edit
+          git rebase main
 
       - name: Push Changes to Dev
-        run: git push origin dev
+        run: git push origin dev --force-with-lease
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
