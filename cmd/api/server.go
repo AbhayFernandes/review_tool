@@ -6,8 +6,12 @@ import (
 	"os"
 
 	"github.com/AbhayFernandes/review_tool/pkg/proto"
+	"github.com/AbhayFernandes/review_tool/pkg/ssh"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 )
 
 type server struct {
@@ -31,6 +35,11 @@ func (s *server) SayHello(
 	}, nil
 }
 
+type UserPubKey struct {
+	User string             `bson:"user"`
+	Sig  string             `bson:"sig"`
+}
+
 func (s *server) UploadDiff(
     ctx context.Context, input *proto.UploadDiffRequest,
 ) (*proto.UploadDiffReply, error) {
@@ -38,15 +47,37 @@ func (s *server) UploadDiff(
 
     db := s.Client.Database("review_service")
     collect := db.Collection("diffs")
+    sigCollection := db.Collection("sigs")
+
+    var result UserPubKey
+    err := sigCollection.FindOne(context.Background(), bson.M{"user": input.User}).Decode(&result)
+
+    if err != nil {
+        return nil, status.Errorf(codes.Internal, "You did not supply a valid, registered user. " + err.Error())
+    }
 
     res, err := collect.InsertOne(ctx, bson.D{
-        {"user", input.User},
-        {"state", PENDING},
+        bson.E{Key: "user", Value: input.User},
+        bson.E{Key: "state", Value: PENDING},
     })
 
     if err != nil {
         // TODO: Change this to be graceful handling
-        log.Fatalln("inserting into collection failed: \n" + err.Error())
+        return nil, status.Errorf(codes.Internal, "inserting into database collection failed: \n" + err.Error())
+    }
+
+    metadata, ok := metadata.FromIncomingContext(ctx)
+    if (!ok) {
+        return nil, status.Errorf(codes.PermissionDenied, "You did not supply any headers for authentication")
+    }
+
+    ssh_header := metadata.Get("ssh_sig")
+    if (len(ssh_header) == 0) {
+        return nil, status.Errorf(codes.PermissionDenied, "You did not provide an ssh signature.")
+    }
+
+    if (!ssh.Verify(ssh_header[0], input.Diff, result.Sig)) {
+        return nil, status.Errorf(codes.PermissionDenied, "Your ssh signature was incorrect.")
     }
 
     id_i := res.InsertedID

@@ -1,5 +1,7 @@
 github.com/axw/gocov v1.2.1 h1:bqtQDBC2tQWcPzTYIVxK0EDCfNRLwsk4NZ0+GB4hX8Q=
 github.com/axw/gocov v1.2.1/go.mod h1:l11/vZBBKfQEE+42jF47myjDrRZHM+hR+XgGjI6FopU=
+go.mongodb.org/mongo-driver v1.17.1 h1:Wic5cJIwJgSpBhe3lx3+/RybR5PiYRMpVFgO7cOHyIM=
+go.mongodb.org/mongo-driver v1.17.1/go.mod h1:wwWm/+BuOddhcq3n68LKRmgk2wXzmF6s0SFOa0GINL4=
 golang.org/x/mod v0.21.0 h1:vvrHzRwRfVKSiLrG+d4FMl/Qi4ukBCE6kZlTUkDYRT0=
 golang.org/x/mod v0.21.0/go.mod h1:6SkKJ3Xj0I0BrPOZoBy3bdMptDDU9oJrpohJ3eWZ1fY=
 golang.org/x/sys v0.12.0 h1:CM0HF96J0hcLAwsHPJZjfdNzs0gftsLfgKt57wWHJ0o=

@@ -2,13 +2,16 @@ package main
 
 import (
 	"log"
+	"os"
 	"time"
 
-    "crypto/tls"
+	"crypto/tls"
+
 	"github.com/AbhayFernandes/review_tool/pkg/proto"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func getClient(serverAddr *string) (proto.ReviewServiceClient, context.Context, *grpc.ClientConn, context.CancelFunc) {
@@ -16,11 +19,15 @@ func getClient(serverAddr *string) (proto.ReviewServiceClient, context.Context, 
 
     creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: false})
 
-	conn, err := grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(creds))
+    var conn *grpc.ClientConn;
+    if (os.Getenv("STAGE") == "devo") {
+        conn, _ = grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(
+            insecure.NewCredentials(),
+        ))
+    } else {
+        conn, _ = grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(creds))
+    }
 
-	if err != nil {
-		log.Fatalln("fail to dial: ", err)
-	}
 
 	client := proto.NewReviewServiceClient(conn)
 

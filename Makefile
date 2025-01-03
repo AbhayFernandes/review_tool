@@ -110,7 +110,7 @@ fmt:
 .PHONY: test
 test:
 	@for pkg in $$(go list -f '{{.Dir}}' -m | xargs); do \
-		go test $$pkg; \
+		go test -count=1 $$pkg; \
 	done
 
 .PHONY: test-cov

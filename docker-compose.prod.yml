@@ -83,6 +83,8 @@ services:
     expose:
       - "27017"
     volumes:
-      - ./data/mongo:/var/lib/mongo
+      - mongodb_data:/data/db
+
 volumes:
   letsencrypt:
+  mongodb_data:
