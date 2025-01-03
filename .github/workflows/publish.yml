@@ -22,11 +22,6 @@ jobs:
       - name: Push API Docker image
         run: docker push ghcr.io/abhayfernandes/api:latest
 
-      - name: Build Web Docker image
-        run: docker build --build-arg STAGE=prod -t ghcr.io/abhayfernandes/web:latest -f ./web/Dockerfile .
-      - name: Push Web Docker image
-        run: docker push ghcr.io/abhayfernandes/web:latest
-
   publish-docker-job-processor:
     permissions: write-all
     runs-on: ubuntu-latest
