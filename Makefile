@@ -110,13 +110,13 @@ fmt:
 .PHONY: test
 test:
 	@for pkg in $$(go list -f '{{.Dir}}' -m | xargs); do \
-		go test -count=1 $$pkg; \
+		go test -count=1 $$pkg/...; \
 	done
 
 .PHONY: test-cov
 test-cov:
 	@for pkg in $$(go list -f '{{.Dir}}' -m | xargs); do \
-		go test -coverprofile=$$(echo $$pkg | tr / -).cover $$pkg; \
+		go test -coverprofile=$$(echo $$pkg | tr / -).cover $$pkg/...; \
 	done
 	@echo "mode: set" > c.out
 	@grep -h -v "^mode:" ./*.cover >> c.out

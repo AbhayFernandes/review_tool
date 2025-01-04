@@ -48,7 +48,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./data/diffs:/diffs
+      - diffs:/diffs
     deploy:
       mode: replicated
       replicas: 3
@@ -88,3 +88,4 @@ services:
 volumes:
   letsencrypt:
   mongodb_data:
+  diffs:

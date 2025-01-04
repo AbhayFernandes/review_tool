@@ -17,17 +17,16 @@ import (
 func getClient(serverAddr *string) (proto.ReviewServiceClient, context.Context, *grpc.ClientConn, context.CancelFunc) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
-    creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: false})
+	creds := credentials.NewTLS(&tls.Config{InsecureSkipVerify: false})
 
-    var conn *grpc.ClientConn;
-    if (os.Getenv("STAGE") == "devo") {
-        conn, _ = grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(
-            insecure.NewCredentials(),
-        ))
-    } else {
-        conn, _ = grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(creds))
-    }
-
+	var conn *grpc.ClientConn
+	if os.Getenv("STAGE") == "devo" {
+		conn, _ = grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(
+			insecure.NewCredentials(),
+		))
+	} else {
+		conn, _ = grpc.NewClient(*serverAddr, grpc.WithTransportCredentials(creds))
+	}
 
 	client := proto.NewReviewServiceClient(conn)
 

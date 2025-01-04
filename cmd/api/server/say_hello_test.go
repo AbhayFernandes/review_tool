@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 )
 
 func TestSayHello(t *testing.T) {
-	server := server{}
+	server := Server{}
 	ctx := context.Background()
 	input := &proto.HelloRequest{
 		Name: "Test",
@@ -25,7 +25,7 @@ func TestSayHello(t *testing.T) {
 }
 
 func TestSayHello_EmptyName(t *testing.T) {
-	server := server{}
+	server := Server{}
 	ctx := context.Background()
 	input := &proto.HelloRequest{
 		Name: "",
@@ -42,7 +42,7 @@ func TestSayHello_EmptyName(t *testing.T) {
 }
 
 func TestSayHello_LongName(t *testing.T) {
-	server := server{}
+	server := Server{}
 	ctx := context.Background()
 	input := &proto.HelloRequest{
 		Name: "ThisIsAVeryLongNameThatExceedsNormalLength",
@@ -59,7 +59,7 @@ func TestSayHello_LongName(t *testing.T) {
 }
 
 func TestSayHello_SpecialCharacters(t *testing.T) {
-	server := server{}
+	server := Server{}
 	ctx := context.Background()
 	input := &proto.HelloRequest{
 		Name: "!@#$%^&*()_+",
