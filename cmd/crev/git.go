@@ -9,13 +9,13 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
-func getCurrentDir() string {
+func getCurrentDir() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
 		// Let's think about a better way to do this
-		panic(err)
+        return "", err
 	}
-	return dir
+	return dir, nil
 }
 
 func getRepository(dir string) *git.Repository {

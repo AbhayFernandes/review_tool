@@ -66,16 +66,23 @@ func genereteSSHKeys(t *testing.T) (string, string) {
 	return tmpFile.Name(), pubFile.Name()
 }
 
-// TestHelloName calls greetings.Hello with a name, checking
-// for a valid return value.
-func TestHelloName(t *testing.T) {
+func TestSignHelloName(t *testing.T) {
 	diffs := "Gladys"
 
 	priv, pub := genereteSSHKeys(t)
 
-	sig := ssh.Sign(diffs, priv)
+	sig, err := ssh.Sign(diffs, priv)
 
-	publicKey := ssh.GetPublicKey(pub)
+    if err != nil {
+        t.Fatalf("The signing failed when it should have succeeded. %s", err)
+    }
+
+	publicKey, err := ssh.GetPublicKey(pub)
+
+    if err != nil {
+        t.Fatalf("Retrieving the publickey failed: %s", err)
+    }
+
 	if (ssh.Verify(sig, diffs, publicKey)) != true {
 		t.Fatalf("The ssh code did not correctly verify ssh sigs it should have.")
 	}
@@ -85,9 +92,13 @@ func TestSign_EmptyMessage(t *testing.T) {
 	diffs := ""
 
 	priv, pub := genereteSSHKeys(t)
-	sig := ssh.Sign(diffs, priv)
+	sig, err := ssh.Sign(diffs, priv)
 
-	publicKey := ssh.GetPublicKey(pub)
+    if err != nil {
+        t.Fatalf("The signing failed when it should have succeeded. %s", err)
+    }
+
+	publicKey, err := ssh.GetPublicKey(pub)
 	if (ssh.Verify(sig, diffs, publicKey)) != true {
 		t.Fatalf("The ssh code did not correctly verify ssh sigs it should have.")
 	}
@@ -97,9 +108,12 @@ func TestSign_LongMessage(t *testing.T) {
 	diffs := "ThisIsAVeryLongMessageThatExceedsNormalLength"
 
 	priv, pub := genereteSSHKeys(t)
-	sig := ssh.Sign(diffs, priv)
+	sig, err := ssh.Sign(diffs, priv)
+    if err != nil {
+        t.Fatalf("The signing failed when it should have succeeded. %s", err)
+    }
 
-	publicKey := ssh.GetPublicKey(pub)
+	publicKey, err := ssh.GetPublicKey(pub)
 	if (ssh.Verify(sig, diffs, publicKey)) != true {
 		t.Fatalf("The ssh code did not correctly verify ssh sigs it should have.")
 	}
@@ -112,7 +126,11 @@ func TestVerify_InvalidSignature(t *testing.T) {
 
 	_, pub := genereteSSHKeys(t)
 
-	publicKey := ssh.GetPublicKey(pub)
+	publicKey, err := ssh.GetPublicKey(pub)
+    if err != nil {
+        t.Fatalf("Getting the public key failed when it should have succeeded. %s", err)
+    }
+
 	if (ssh.Verify(invalidSig, diffs, publicKey)) != false {
 		t.Fatalf("The ssh code did not correctly identify an invalid signature.")
 	}
@@ -122,11 +140,15 @@ func TestVerify_TwoSeperateSigsInvalid(t *testing.T) {
 	diffs := "ThisIsAVeryLongMessageThatExceedsNormalLength"
 
 	priv, _ := genereteSSHKeys(t)
-	sig := ssh.Sign(diffs, priv)
+	sig, err := ssh.Sign(diffs, priv)
+
+    if (err != nil) {
+        t.Fatalf("There was an error signing the ssh keys: %s", err)
+    }
 
 	_, pub := genereteSSHKeys(t)
 
-	publicKey := ssh.GetPublicKey(pub)
+	publicKey, err := ssh.GetPublicKey(pub)
 	if (ssh.Verify(sig, diffs, publicKey)) != false {
 		t.Fatalf("The ssh code did not correctly verify ssh sigs were different.")
 	}

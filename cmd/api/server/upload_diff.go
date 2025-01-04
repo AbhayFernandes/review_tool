@@ -19,7 +19,6 @@ type UserPubKey struct {
 	Sig  string `bson:"sig"`
 }
 
-
 func (s *Server) UploadDiff(ctx context.Context, input *proto.UploadDiffRequest) (*proto.UploadDiffReply, error) {
 	log.Println("Recieved an upload diff request from: " + input.User)
 	db := s.Client.Database("review_service")

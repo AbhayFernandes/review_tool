@@ -36,8 +36,8 @@ func main() {
 	if err != nil {
 		fmt.Println("There was an error getting diffs. Are you in a git repo? Is there a commit to upload?")
 	}
-
-	md := metadata.Pairs("ssh_sig", ssh.Sign(diff, *sshKey))
+    res, err := ssh.Sign(diff, *sshKey)
+	md := metadata.Pairs("ssh_sig", res)
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	_, err = client.UploadDiff(ctx, &proto.UploadDiffRequest{
@@ -50,12 +50,12 @@ func main() {
 }
 
 func getDiffs() (string, error) {
-	currentDir := getCurrentDir()
+	currentDir, err := getCurrentDir()
 	repository := getRepository(currentDir)
 
 	diffs, err := getPatchDiffs(repository)
 	if err != nil {
-		panic(err)
+		return "", nil
 	}
 	if len(diffs) > 0 {
 		return diffs, nil
