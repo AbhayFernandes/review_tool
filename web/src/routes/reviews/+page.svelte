@@ -1,5 +1,5 @@
 <script lang="ts">
-  // 1) define your interface right here
+  // 1) define interface right here
   interface Review {
     id: string;
     title: string;
