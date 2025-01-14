@@ -1,65 +1,37 @@
 package main
 
 import (
-	"errors"
 	"flag"
-	"fmt"
 
-	"github.com/AbhayFernandes/review_tool/pkg/proto"
-	"github.com/AbhayFernandes/review_tool/pkg/ssh"
-	"google.golang.org/grpc/metadata"
+	"github.com/AbhayFernandes/review_tool/cmd/crev/commands"
 )
 
 func main() {
-	serverAddr := flag.String(
-		"server", "crev.abhayf.com:8080",
-		"The server address in the form of host:port",
-	)
+    var (
+        // define global flags here
+        _ = flag.Bool("test", false, "test")
+    )
 
-	user := flag.String(
-		"user", "ferna355",
-		"Your MSU NetID without the @msu.edu. Ex: ferna355",
-	)
+    flag.Parse()
+    args := flag.Args()
 
-	sshKey := flag.String(
-		"ssh", "~/.ssh/id_ecdsa",
-		"The filepath to your local ssh private key. Ex: ~/.ssh/id_ecdsa",
-	)
+    rootCmd := ""
 
-	flag.Parse()
+    if len(args) > 1 {
+        rootCmd, args = args[0], args[1:]
+    } else {
+        args = []string{""}
+    }
 
-	client, ctx, conn, cancel := getClient(serverAddr)
-	defer conn.Close()
-	defer cancel()
-
-	diff, err := getDiffs()
-	if err != nil {
-		fmt.Println("There was an error getting diffs. Are you in a git repo? Is there a commit to upload?")
-	}
-    res, err := ssh.Sign(diff, *sshKey)
-	md := metadata.Pairs("ssh_sig", res)
-	ctx = metadata.NewOutgoingContext(ctx, md)
-
-	_, err = client.UploadDiff(ctx, &proto.UploadDiffRequest{
-		Diff: diff,
-		User: *user,
-	})
-	if err != nil {
-		fmt.Println("Uploading diffs has failed: ", err.Error())
-	}
+    switch rootCmd {
+    case "help":
+        commands.Help(args)
+    case "login":
+        commands.Login(args)
+    case "signup":
+        commands.Signup(args)
+    default:
+        commands.UploadCurrentDiff(args)
+    }
 }
 
-func getDiffs() (string, error) {
-	currentDir, err := getCurrentDir()
-	repository := getRepository(currentDir)
-
-	diffs, err := getPatchDiffs(repository)
-	if err != nil {
-		return "", nil
-	}
-	if len(diffs) > 0 {
-		return diffs, nil
-	} else {
-		return "", errors.New("diff doesn't exist. No commit exists")
-	}
-}

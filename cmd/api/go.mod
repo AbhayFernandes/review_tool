@@ -6,6 +6,7 @@ require (
 	github.com/AbhayFernandes/review_tool/pkg/proto v0.0.0-20250103023431-11ca511a2d00
 	github.com/AbhayFernandes/review_tool/pkg/ssh v0.0.0-20250103023431-11ca511a2d00
 	github.com/ory/dockertest/v3 v3.11.0
+	go.mongodb.org/mongo-driver v1.17.2
 	go.mongodb.org/mongo-driver/v2 v2.0.0
 	google.golang.org/grpc v1.69.2
 )

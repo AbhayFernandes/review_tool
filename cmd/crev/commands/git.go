@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ func getCurrentDir() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
 		// Let's think about a better way to do this
-        return "", err
+		return "", err
 	}
 	return dir, nil
 }

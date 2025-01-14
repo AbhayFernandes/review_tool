@@ -73,15 +73,15 @@ func TestSignHelloName(t *testing.T) {
 
 	sig, err := ssh.Sign(diffs, priv)
 
-    if err != nil {
-        t.Fatalf("The signing failed when it should have succeeded. %s", err)
-    }
+	if err != nil {
+		t.Fatalf("The signing failed when it should have succeeded. %s", err)
+	}
 
 	publicKey, err := ssh.GetPublicKey(pub)
 
-    if err != nil {
-        t.Fatalf("Retrieving the publickey failed: %s", err)
-    }
+	if err != nil {
+		t.Fatalf("Retrieving the publickey failed: %s", err)
+	}
 
 	if (ssh.Verify(sig, diffs, publicKey)) != true {
 		t.Fatalf("The ssh code did not correctly verify ssh sigs it should have.")
@@ -94,9 +94,9 @@ func TestSign_EmptyMessage(t *testing.T) {
 	priv, pub := genereteSSHKeys(t)
 	sig, err := ssh.Sign(diffs, priv)
 
-    if err != nil {
-        t.Fatalf("The signing failed when it should have succeeded. %s", err)
-    }
+	if err != nil {
+		t.Fatalf("The signing failed when it should have succeeded. %s", err)
+	}
 
 	publicKey, err := ssh.GetPublicKey(pub)
 	if (ssh.Verify(sig, diffs, publicKey)) != true {
@@ -109,9 +109,9 @@ func TestSign_LongMessage(t *testing.T) {
 
 	priv, pub := genereteSSHKeys(t)
 	sig, err := ssh.Sign(diffs, priv)
-    if err != nil {
-        t.Fatalf("The signing failed when it should have succeeded. %s", err)
-    }
+	if err != nil {
+		t.Fatalf("The signing failed when it should have succeeded. %s", err)
+	}
 
 	publicKey, err := ssh.GetPublicKey(pub)
 	if (ssh.Verify(sig, diffs, publicKey)) != true {
@@ -127,9 +127,9 @@ func TestVerify_InvalidSignature(t *testing.T) {
 	_, pub := genereteSSHKeys(t)
 
 	publicKey, err := ssh.GetPublicKey(pub)
-    if err != nil {
-        t.Fatalf("Getting the public key failed when it should have succeeded. %s", err)
-    }
+	if err != nil {
+		t.Fatalf("Getting the public key failed when it should have succeeded. %s", err)
+	}
 
 	if (ssh.Verify(invalidSig, diffs, publicKey)) != false {
 		t.Fatalf("The ssh code did not correctly identify an invalid signature.")
@@ -142,9 +142,9 @@ func TestVerify_TwoSeperateSigsInvalid(t *testing.T) {
 	priv, _ := genereteSSHKeys(t)
 	sig, err := ssh.Sign(diffs, priv)
 
-    if (err != nil) {
-        t.Fatalf("There was an error signing the ssh keys: %s", err)
-    }
+	if err != nil {
+		t.Fatalf("There was an error signing the ssh keys: %s", err)
+	}
 
 	_, pub := genereteSSHKeys(t)
 

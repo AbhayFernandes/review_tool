@@ -125,7 +125,18 @@ test-cov:
 # Generate protobuf files
 .PHONY: proto
 proto:
-	cd "pkg/proto" && protoc echo.proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative
+	rm -rf $(WEB_DIR)/src/proto && \
+	mkdir -p $(WEB_DIR)/src/proto && \
+	cd "pkg/proto" && \
+	protoc review_tool.proto \
+		--go_out=. --go_opt=paths=source_relative \
+		--go-grpc_out=. --go-grpc_opt=paths=source_relative && \
+	cd "../../$(WEB_DIR)" && \
+	npx protoc \
+		--ts_out=src/proto \
+		--proto_path=../pkg/proto \
+		../pkg/proto/review_tool.proto
+
 
 # Clean commands
 .PHONY: clean

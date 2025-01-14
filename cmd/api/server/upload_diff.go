@@ -19,7 +19,7 @@ type UserPubKey struct {
 	Sig  string `bson:"sig"`
 }
 
-func (s *Server) UploadDiff(ctx context.Context, input *proto.UploadDiffRequest) (*proto.UploadDiffReply, error) {
+func (s *Server) UploadDiff(ctx context.Context, input *proto.UploadDiffRequest) (*proto.Unit, error) {
 	log.Println("Recieved an upload diff request from: " + input.User)
 	db := s.Client.Database("review_service")
 
@@ -33,7 +33,7 @@ func (s *Server) UploadDiff(ctx context.Context, input *proto.UploadDiffRequest)
 		return nil, err
 	}
 
-	res, err := insertDataToDatabase(db, input)
+	res, err := insertDiffToDatabase(db, input)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (s *Server) UploadDiff(ctx context.Context, input *proto.UploadDiffRequest)
 		return nil, err
 	}
 
-	return &proto.UploadDiffReply{}, nil
+	return &proto.Unit{}, nil
 }
 
 func fetchUserPubKey(db *mongo.Database, user string) (UserPubKey, error) {
@@ -59,7 +59,7 @@ func fetchUserPubKey(db *mongo.Database, user string) (UserPubKey, error) {
 	return result, nil
 }
 
-func insertDataToDatabase(db *mongo.Database, input *proto.UploadDiffRequest) (*mongo.InsertOneResult, error) {
+func insertDiffToDatabase(db *mongo.Database, input *proto.UploadDiffRequest) (*mongo.InsertOneResult, error) {
 	collect := db.Collection("diffs")
 	res, err := collect.InsertOne(context.Background(), bson.D{
 		bson.E{Key: "user", Value: input.User},

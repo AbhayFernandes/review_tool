@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "auto"  // Automatically convert modules (e.g., CommonJS to ES modules)
+      }
+    ]
+  ],
+  "plugins": [
+    "transform-commonjs"
+  ]
+}
+

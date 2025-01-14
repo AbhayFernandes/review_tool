@@ -3,8 +3,10 @@ package main
 import (
 	"log"
 	"net"
+	"os"
 
 	"github.com/AbhayFernandes/review_tool/cmd/api/server"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -15,6 +17,11 @@ func main() {
 	}
 
 	s, close := server.CreateServer()
+
+    if (os.Getenv("STAGE") == "devo") {
+        reflection.Register(s)
+    }
+
 	defer close()
 
 	if err := s.Serve(listener); err != nil {

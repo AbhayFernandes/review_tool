@@ -1,15 +1,32 @@
 <script>
 	let { children } = $props();
+    import '../app.css';
 </script>
 
 <header>
-	<nav>
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/reviews">Reviews</a></li>
-			<li><a href="/upload-diff">Upload Diff</a></li>
-		</ul>
-	</nav>
+	<div class="navbar bg-base-200">
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl" href="/">CRev</a>
+            <a class="btn btn-ghost p-2" href="/reviews">Reviews</a>
+            <a class="btn btn-ghost p-2" href="/upload-diff">Upload Diff</a>
+        </div>
+        <div class="flex-none">
+            <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" />
+        </div>
+      </div>
+        <!-- This will need to be updated to look not silly later -->
+          <ul
+            tabindex="0"
+            class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Signup</a></li>
+          </ul>
+    </div>
 </header>
 
 <main>

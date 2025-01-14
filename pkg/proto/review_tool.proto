@@ -6,7 +6,9 @@ option go_package = "./proto";
 
 service ReviewService {
     rpc SayHello(HelloRequest) returns (HelloReply);
-    rpc UploadDiff(UploadDiffRequest) returns (UploadDiffReply);
+    rpc UploadDiff(UploadDiffRequest) returns (Unit);
+    rpc CreateSession(Unit) returns (CreateSessionReply);
+    rpc VerifySession(VerifySessionRequest) returns (Unit);
 }
 
 message HelloRequest {
@@ -22,6 +24,14 @@ message UploadDiffRequest {
     string user = 2;
 }
 
-message UploadDiffReply {
-    
+message CreateSessionReply {
+    string nonce = 1;
+}
+
+message VerifySessionRequest {
+    string signedNonce = 1;
+    string user = 2;
+}
+
+message Unit {
 }

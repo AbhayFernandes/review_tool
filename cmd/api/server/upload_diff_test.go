@@ -101,7 +101,7 @@ func TestInsertDataToDatabase(t *testing.T) {
 		User: "ferna355",
 		Diff: "test",
 	}
-	res, err := insertDataToDatabase(dbClient.Database("review_service"), &input)
+	res, err := insertDiffToDatabase(dbClient.Database("review_service"), &input)
 	if err != nil {
 		t.Fatalf("Unable to insert into database: %s", err)
 	}

@@ -19,7 +19,7 @@ RUN go mod download
 RUN go build -o job-processor ./cmd/job-processor
 
 # Use a minimal base image for running the binary
-FROM gcr.io/distroless/base-debian10
+FROM gcr.io/distroless/base-debian12
 
 # Set working directory
 WORKDIR /app

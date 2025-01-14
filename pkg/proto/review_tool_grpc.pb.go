@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.2
-// source: echo.proto
+// source: review_tool.proto
 
 package proto
 
@@ -19,8 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ReviewService_SayHello_FullMethodName   = "/review_service.ReviewService/SayHello"
-	ReviewService_UploadDiff_FullMethodName = "/review_service.ReviewService/UploadDiff"
+	ReviewService_SayHello_FullMethodName      = "/review_service.ReviewService/SayHello"
+	ReviewService_UploadDiff_FullMethodName    = "/review_service.ReviewService/UploadDiff"
+	ReviewService_CreateSession_FullMethodName = "/review_service.ReviewService/CreateSession"
+	ReviewService_VerifySession_FullMethodName = "/review_service.ReviewService/VerifySession"
 )
 
 // ReviewServiceClient is the client API for ReviewService service.
@@ -28,7 +30,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReviewServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
-	UploadDiff(ctx context.Context, in *UploadDiffRequest, opts ...grpc.CallOption) (*UploadDiffReply, error)
+	UploadDiff(ctx context.Context, in *UploadDiffRequest, opts ...grpc.CallOption) (*Unit, error)
+	CreateSession(ctx context.Context, in *Unit, opts ...grpc.CallOption) (*CreateSessionReply, error)
+	VerifySession(ctx context.Context, in *VerifySessionRequest, opts ...grpc.CallOption) (*Unit, error)
 }
 
 type reviewServiceClient struct {
@@ -49,10 +53,30 @@ func (c *reviewServiceClient) SayHello(ctx context.Context, in *HelloRequest, op
 	return out, nil
 }
 
-func (c *reviewServiceClient) UploadDiff(ctx context.Context, in *UploadDiffRequest, opts ...grpc.CallOption) (*UploadDiffReply, error) {
+func (c *reviewServiceClient) UploadDiff(ctx context.Context, in *UploadDiffRequest, opts ...grpc.CallOption) (*Unit, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UploadDiffReply)
+	out := new(Unit)
 	err := c.cc.Invoke(ctx, ReviewService_UploadDiff_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reviewServiceClient) CreateSession(ctx context.Context, in *Unit, opts ...grpc.CallOption) (*CreateSessionReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateSessionReply)
+	err := c.cc.Invoke(ctx, ReviewService_CreateSession_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *reviewServiceClient) VerifySession(ctx context.Context, in *VerifySessionRequest, opts ...grpc.CallOption) (*Unit, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Unit)
+	err := c.cc.Invoke(ctx, ReviewService_VerifySession_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +88,9 @@ func (c *reviewServiceClient) UploadDiff(ctx context.Context, in *UploadDiffRequ
 // for forward compatibility.
 type ReviewServiceServer interface {
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
-	UploadDiff(context.Context, *UploadDiffRequest) (*UploadDiffReply, error)
+	UploadDiff(context.Context, *UploadDiffRequest) (*Unit, error)
+	CreateSession(context.Context, *Unit) (*CreateSessionReply, error)
+	VerifySession(context.Context, *VerifySessionRequest) (*Unit, error)
 	mustEmbedUnimplementedReviewServiceServer()
 }
 
@@ -78,8 +104,14 @@ type UnimplementedReviewServiceServer struct{}
 func (UnimplementedReviewServiceServer) SayHello(context.Context, *HelloRequest) (*HelloReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
 }
-func (UnimplementedReviewServiceServer) UploadDiff(context.Context, *UploadDiffRequest) (*UploadDiffReply, error) {
+func (UnimplementedReviewServiceServer) UploadDiff(context.Context, *UploadDiffRequest) (*Unit, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadDiff not implemented")
+}
+func (UnimplementedReviewServiceServer) CreateSession(context.Context, *Unit) (*CreateSessionReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateSession not implemented")
+}
+func (UnimplementedReviewServiceServer) VerifySession(context.Context, *VerifySessionRequest) (*Unit, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifySession not implemented")
 }
 func (UnimplementedReviewServiceServer) mustEmbedUnimplementedReviewServiceServer() {}
 func (UnimplementedReviewServiceServer) testEmbeddedByValue()                       {}
@@ -138,6 +170,42 @@ func _ReviewService_UploadDiff_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ReviewService_CreateSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Unit)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReviewServiceServer).CreateSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReviewService_CreateSession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReviewServiceServer).CreateSession(ctx, req.(*Unit))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ReviewService_VerifySession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifySessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ReviewServiceServer).VerifySession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ReviewService_VerifySession_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ReviewServiceServer).VerifySession(ctx, req.(*VerifySessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ReviewService_ServiceDesc is the grpc.ServiceDesc for ReviewService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -153,7 +221,15 @@ var ReviewService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "UploadDiff",
 			Handler:    _ReviewService_UploadDiff_Handler,
 		},
+		{
+			MethodName: "CreateSession",
+			Handler:    _ReviewService_CreateSession_Handler,
+		},
+		{
+			MethodName: "VerifySession",
+			Handler:    _ReviewService_VerifySession_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "echo.proto",
+	Metadata: "review_tool.proto",
 }

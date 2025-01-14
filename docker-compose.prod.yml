@@ -43,6 +43,8 @@ services:
       - "traefik.http.routers.api.entrypoints=apisecure"
       - "traefik.http.routers.api.tls.certresolver=myresolver"
       - "traefik.http.services.api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.middlewares.api-grpc.grpcWeb.allowOrigins=*"
+      - "traefik.http.routers.api.middlewares=api-grpc"
     environment:
       - STAGE=devo
     depends_on:

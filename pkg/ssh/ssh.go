@@ -17,8 +17,8 @@ func Sign(message, filepath string) (string, error) {
 
 	if err != nil {
 		// TODO: Handle gracefully
-		fmt.Println("An error occured reading the private key")
-        return "", err
+        fmt.Println("An error occured reading the private key: ", err)
+		return "", err
 	}
 
 	privateKey, err := ssh.ParseRawPrivateKey(privateKeyBytes)
@@ -26,7 +26,7 @@ func Sign(message, filepath string) (string, error) {
 	if err != nil {
 		// TODO: Handle gracefully
 		fmt.Println("An error occured parsing the private key")
-        return "", err
+		return "", err
 	}
 
 	hash := sha256.Sum256([]byte(message))
@@ -45,20 +45,20 @@ func Verify(signature, message, publicKey string) bool {
 
 	publicKeyParse, err := ssh.ParsePublicKey(publicKeyAuthorizedBytes.Marshal())
 	if err != nil {
-        return false
+		return false
 	}
 
 	messageBytes := []byte(message)
 
 	signatureParts := strings.Fields(signature)
 
-    if (len(signatureParts) < 2) {
-        return false
-    }
+	if len(signatureParts) < 2 {
+		return false
+	}
 
 	blob, err := base64.StdEncoding.DecodeString(signatureParts[1])
 	if err != nil {
-        return false
+		return false
 	}
 
 	sig := &ssh.Signature{
@@ -80,8 +80,8 @@ func GetPublicKey(filepath string) (string, error) {
 
 	if err != nil {
 		// TODO: Handle gracefully
-		fmt.Println("An error occured reading the private key")
-        return "", err
+        fmt.Println("An error occured reading the private key: ", err)
+		return "", err
 	}
 
 	return string(publicKeyBytes), nil

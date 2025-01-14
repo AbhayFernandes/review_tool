@@ -1,7 +1,6 @@
 <script lang="ts">
     import type { ActionData } from './$types';
     let { form }: { form: ActionData } = $props();
-
   </script>
   
   <h1>Upload Diff</h1>
