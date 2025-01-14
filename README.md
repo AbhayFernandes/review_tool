@@ -4,11 +4,29 @@
 
 # Review Tool
 
-## Introduction
+## Introduction/Use
 
 Welcome to the Review Tool project! This project consists of several components including a CLI, API, Job Processor, and a web frontend. This README provides details about the commands in the Makefile, the docker-compose setup, and the Dockerfiles used in the project.
 
-## Makefile Commands
+### 📦 Quick Start/Install:
+
+**DO NOT RUN RANDOM COMMANDS ON THE INTERNET** Take a look at the scripts in the repo above before running the commands below to install the tool.
+
+Install the latest release with a single command:
+
+**For macOS/Linux:**  
+```bash
+curl -sL https://raw.githubusercontent.com/username/repo/main/install.sh | bash
+```
+
+**For Windows (PowerShell):**  
+```powershell
+iwr -useb https://raw.githubusercontent.com/username/repo/main/install.ps1 | iex
+```
+
+## Development/Contributing
+
+### Makefile Commands
 
 The Makefile includes various commands for building, running, testing, and cleaning up the project components. Below are the details of the available commands:
 
