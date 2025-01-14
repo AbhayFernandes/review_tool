@@ -16,12 +16,12 @@ Install the latest release with a single command:
 
 **For macOS/Linux:**  
 ```bash
-curl -sL https://raw.githubusercontent.com/username/repo/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/AbhayFernandes/review_tool/main/install.sh | bash
 ```
 
 **For Windows (PowerShell):**  
 ```powershell
-iwr -useb https://raw.githubusercontent.com/username/repo/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/username/AbhayFernandes/review_tool/main/install.ps1 | iex
 ```
 
 ## Development/Contributing
