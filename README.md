@@ -10,7 +10,7 @@ Welcome to the Review Tool project! This project consists of several components 
 
 ### 📦 Quick Start/Install:
 
-**DO NOT RUN RANDOM COMMANDS ON THE INTERNET** Take a look at the scripts in the repo above before running the commands below to install the tool.
+**DO NOT RUN RANDOM COMMANDS ON THE INTERNET!**\n Take a look at the scripts in the repo above before running the commands below to install the tool.
 
 Install the latest release with a single command:
 
@@ -21,7 +21,7 @@ curl -sL https://raw.githubusercontent.com/AbhayFernandes/review_tool/main/insta
 
 **For Windows (PowerShell):**  
 ```powershell
-iwr -useb https://raw.githubusercontent.com/username/AbhayFernandes/review_tool/main/install.ps1 | iex
+iwr -useb https://raw.githubusercontent.com/AbhayFernandes/review_tool/main/install.ps1 | iex
 ```
 
 ## Development/Contributing
